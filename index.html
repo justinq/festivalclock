@@ -1,0 +1,143 @@
+<!--
+ Copyright (c) 2011 Justin Quillinan - http://justinq.net
+ GPL version 3 or later (see http://www.gnu.org/copyleft/gpl.html)
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edinburgh Festival Clock 2012</title>
+        <script type="text/javascript" src="/jquery-1.6.2.min.js"> </script>
+        <script type="text/javascript" src="/utilities.js"> </script>
+        <script type="text/javascript" src="/date.js"> </script>
+        <script type="text/javascript" src="/timer.js"> </script>
+        <script type="text/javascript" src="/clock.js"> </script>
+        <script type="text/javascript" src="/index.js"> </script>
+        <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:300,400,900&v2'>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+    </head>
+    <body>
+        <div id='content' class='content'>
+            <div id='clockPlayControls' class='clockPlayControls'>
+                <input id='btnStart' class='button' type="button"
+                    style="width:40px"
+                    value="|<"
+                    onclick="jumpToStart()"
+                    onmouseover ="hover(this,'buttonhover')"
+                    onmouseout  ="hover(this,'button')"
+                />
+                <input id='btnRewind' class='button' type="button"
+                    style="width:40px"
+                    value="<<"
+                    onclick="rewind()"
+                    onmouseover ="hover(this,'buttonhover')"
+                    onmouseout  ="hover(this,'button')"
+                />
+                <input id='btnPlayPause' class='button' type="button"
+                    style="width:40px"
+                    value="| |"
+                    onclick="togglePlay()"
+                    onmouseover ="hover(this,'buttonhover')"
+                    onmouseout  ="hover(this,'button')"
+                />
+                <input id='btnFastForward' class='button' type="button"
+                    style="width:40px"
+                    value=">>"
+                    onclick="fastforward()"
+                    onmouseover ="hover(this,'buttonhover')"
+                    onmouseout  ="hover(this,'button')"
+                />
+                <input id='btnEnd' class='button' type="button"
+                    style="width:40px"
+                    value=">|"
+                    onclick="jumpToEnd()"
+                    onmouseover ="hover(this,'buttonhover')"
+                    onmouseout  ="hover(this,'button')"
+                />
+            </div>
+            <div id='clockHelpControls' class='clockHelpControls'>
+                <input id='btnHelp' class='button' type="button"
+                    value="Help"
+                    onclick="showHelp()"
+                    onmouseover ="hover(this,'buttonhover')"
+                    onmouseout  ="hover(this,'button')"
+                />
+                <input id='btnAbout' class='button' type="button"
+                    value="About"
+                    onclick="showAbout()"
+                    onmouseover ="hover(this,'buttonhover')"
+                    onmouseout  ="hover(this,'button')"
+                />
+            </div>
+            <div id='clockTime' class='clockTime'></div>
+            <div id='clockDate' class='clockDate'></div>
+            <div id='itemInfo' class='itemInfo'></div>
+            <canvas id="clockCanvas" class="clockCanvas" width="1024" height="715" >
+            </canvas>
+            <div id="clockHelp" class="clockHelp">
+                <div id="clockHelpTitle" class="clockHelpTitle">
+                    <h2>Edinburgh Festival Clock 2012</h2>
+                </div>
+                <div id="clockHelpGeneral" class="clockHelpGeneral">
+                    <p>
+                    Each festival is represented by a circle.  Each line on the circle represents a performance during the festival.  Performances burn brighter as they approach their starting times, burn brightest when they are running and burn out when their festival run is complete.
+                    </p>
+                    <p>
+                    Each colour represents a different genre of performance.  Each ring within a festival represents a category: here <span id='categoryDesc'>they represent the minimum price of a ticket, running from the most expensive in the centre out to the least expensive.</span>
+                    </p>
+                </div>
+                <div id="clockControlHelp" class="clockControlHelp">
+                    Use the controls to pause, speed up, slow down, or reverse the festival clock.<br/>
+                    Clicking the fast-forward button multiple times increases the speed.
+                </div>
+                <div id="artLabel" class="art">
+                    Art Festival
+                </div>
+                <div id="bookLabel" class="book">
+                    International<br/>Book Festival
+                </div>
+                <div id="fringeLabel" class="fringe">
+                    Festival Fringe
+                </div>
+                <div id="internationalLabel" class="internationalLabel">
+                    International Festival
+                </div>
+                <div id="jazzLabel" class="jazzLabel">
+                    Jazz and Blues Festival
+                </div>
+                <div id="melaLabel" class="melaLabel">
+                    Mela Festival
+                </div>
+                <div id="tattooLabel" class="tattooLabel">
+                    Edinburgh Military Tattoo
+                </div>
+            </div>
+            <div id="clockAbout" class="clockAbout">
+                <h2>Edinburgh Festival Clock 2012</h2>
+                <div id="clockHelpDesc" class="clockHelpDesc">
+                    <p>
+                    The <b>Edinburgh Festival Clock</b> was a visualisation commissioned by the <a href='http://www.festivalslab.com'>Edinburgh Festivals Innovation Lab</a> and supported by the <a href='http://www.nweurope.eu/'>INTERREG IVB North-West Europe Programme</a>, originally for the 2011 Festival Season.
+                    </p>
+                    <p>
+                    It was designed by <a href='http://www.itsbeenreal.co.uk'>Stefanie Posavec</a> and developed by <a href='http://www.justinq.net'>Justin Quillinan</a>.  It was built using the <a href='http://festivalslab.com/api2012'>Summer Festivals Listings API</a>.
+                    </p>
+                    <p>
+                    It shows the wonder and complexity of every show in the 2012 programme listings data for the Edinburgh summer festivals: International, Fringe, Art, Book, Jazz & Blues, Mela and Tattoo.  The visualisation shows how the festivals evolve through the season, showing how every event lights up and burns out as it begins and ends.
+                    </p>
+                    <p>
+                    See the clock with the original <a href="2011/?date=20110801060000">2011 Edinburgh Festival data</a>.
+                    </p>
+                </div>
+            </div>
+            <div id="clockLoading" class="clockLoading">
+                <h2>Edinburgh Festival Clock 2012</h2>
+                <p>Loading.</p>
+                <p style='text-align:left'>This may take a moment.<span id='loadingTick'></span></p>
+            </div>
+            <div id="clockError" class="clockError">
+                <h2>Edinburgh Festival Clock 2012</h2>
+                <p>Sorry! This visualisation requires features that your browser doesn't have.  You can download <a href='http://www.mozilla.com/en-US/firefox/new/'>firefox</a> or <a href='http://www.google.com/chrome'>chrome</a> to view.<p>
+            </div>
+        </div>
+    </body>
+</html>
+

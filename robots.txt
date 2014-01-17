@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /.git/
+Disallow: /tmp/
+Disallow: /cgi-bin/
+Disallow: /min_price.json
+
